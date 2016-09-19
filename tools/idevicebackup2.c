@@ -1215,7 +1215,7 @@ static void print_usage(int argc, char **argv)
 	printf("Homepage: <" PACKAGE_URL ">\n");
 }
 
-int main(int argc, char *argv[])
+int idevicebackup2(int argc, char *argv[], void (*callback)(double))
 {
 	idevice_error_t ret = IDEVICE_E_UNKNOWN_ERROR;
 	lockdownd_error_t ldret = LOCKDOWN_E_UNKNOWN_ERROR;
@@ -2121,6 +2121,7 @@ checkpoint:
 
 				/* print status */
 				if (overall_progress > 0) {
+					if (callback) callback(overall_progress/100.0);
 					print_progress_real(overall_progress, 0);
 					PRINT_VERBOSE(1, " Finished\n");
 				}
@@ -2279,3 +2280,6 @@ files_out:
 	return result_code;
 }
 
+int main(int argc, char *argv[]) {
+   return idevicebackup2(argc, argv, (void *)NULL);
+}
